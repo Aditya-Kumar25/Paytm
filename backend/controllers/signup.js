@@ -1,6 +1,6 @@
 const express = require("express")
 const {signupSchema} = require("../validation")
-const { User} = require("../db")
+const { User,Account} = require("../db")
 async function SignUp(require,response){
     const payload = require.body;
     console.log(payload);
@@ -27,6 +27,13 @@ async function SignUp(require,response){
         email:parsed.data.email,
         password : parsed.data.password
     })
+    const userId = user._id;
+
+    await Account.create({
+        userId,
+        balance:1+Math.random()*10000
+    })
+
     response.status(200).json({
         msg:"user created successfully"
     })
