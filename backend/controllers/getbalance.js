@@ -1,15 +1,15 @@
 const express = require("express")
-const {Account,User} = require("../db")
+const {Account} = require("../db")
 const { authMiddleware } = require("../middleware")
 
 async function getBalance(req,res){
-    const {id} = req.body;
-
+    
     const account = await Account.findOne({
-        userId:id
+        userId:req.userId
     })
+    console.log(account)
 
-    if(!user){
+    if(!account){
         res.status(404).json({
             msg:"maujood nahi"
         })

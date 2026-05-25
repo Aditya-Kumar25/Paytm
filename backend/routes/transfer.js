@@ -6,7 +6,7 @@ const {authMiddleware} = require("../middleware")
 
 const router = express.Router()
 
-router.update("/transfer",authMiddleware,Transaction)
-router.get
+router.post("/transfer",authMiddleware,Transaction)
+router.get('/balance',authMiddleware,getBalance)
 
 module.exports = router;
