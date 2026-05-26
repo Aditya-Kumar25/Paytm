@@ -1,6 +1,9 @@
 const express = require("express")
 const {signupSchema} = require("../validation")
 const { User,Account} = require("../db")
+const jwt = require("jsonwebtoken")
+const {JWT_SECRET} = require("../config")
+
 async function SignUp(require,response){
     const payload = require.body;
     console.log(payload);
@@ -27,6 +30,14 @@ async function SignUp(require,response){
         email:parsed.data.email,
         password : parsed.data.password
     })
+    const token = jwt.sign(
+        {
+        id:user._id,
+        username:user.username
+        },
+        JWT_SECRET,
+        {expiresIn : "1d"},
+    );
     const userId = user._id;
 
     await Account.create({
@@ -35,7 +46,8 @@ async function SignUp(require,response){
     })
 
     response.status(200).json({
-        msg:"user created successfully"
+        msg:"user created successfully",
+        token
     })
 }
 
